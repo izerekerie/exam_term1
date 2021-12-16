@@ -35,7 +35,7 @@ public class CityController {
 		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new APICustomResponse(false, "City not found with id " + id));
+				.body(new APICustomResponse(false, "City not found with id"));
 	}
 
 	@GetMapping("/all")
@@ -54,4 +54,6 @@ public class CityController {
 		City city = cityService.save(dto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(city);
 	}
+
+
 }

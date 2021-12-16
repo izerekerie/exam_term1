@@ -4,6 +4,11 @@ public class CreateCityDTO {
 
 	private String name;
 
+	public CreateCityDTO(String name, double weather) {
+		this.name = name;
+		this.weather = weather;
+	}
+
 	private double weather;
 
 	public String getName() {
