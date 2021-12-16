@@ -26,7 +26,8 @@ public class CityControllerIntegrationTest {
     @Test
     public void getAll_success() throws JSONException {
         String response = this.restTemplate.getForObject("/api/cities/all", String.class);;
-        JSONAssert.assertEquals("[{\"id\":101,\"name\":\"Kigali\",\"weather\":24,\"fahrenheit\": 0.0},{\"id\":102,\"name\":\"Musanze\",\"weather\":18,\"fahrenheit\": 0.0},{\"id\":103,\"name\":\"Rubavu\",\"weather\":20,\"fahrenheit\": 0.0},{\"id\":104,\"name\":\"Nyagatare\",\"weather\":28,\"fahrenheit\": 0.0}]", response, true);
+
+        JSONAssert.assertEquals("[{\"id\":101,\"name\":\"Kigali\",\"weather\":24,\"fahrenheit\": 75.2},{\"id\":102,\"name\":\"Musanze\",\"weather\":18,\"fahrenheit\": 64.4},{\"id\":103,\"name\":\"Rubavu\",\"weather\":20,\"fahrenheit\": 68},{\"id\":104,\"name\":\"Nyagatare\",\"weather\":28,\"fahrenheit\": 82.4}]", response, true);
     }
     @Test
     public void getById_Success() throws JSONException {
@@ -35,6 +36,7 @@ public class CityControllerIntegrationTest {
         assertEquals(200, response.getStatusCodeValue());
 
         assertEquals("Kigali", response.getBody().getName());
+        assertEquals(75.2,response.getBody().getFahrenheit());
     }
 
     @Test
@@ -62,6 +64,17 @@ public class CityControllerIntegrationTest {
         assertEquals("City name "+city.getName()+" is registered already",response.getBody().getMessage());
 
     }
-    
+    @Test
+    public void create_testNameAlreadyRegistered() {
+        CreateCityDTO dto = new CreateCityDTO("Musanze",18);
+
+
+        ResponseEntity<APICustomResponse> response = restTemplate.postForEntity("/api/cities/add", dto, APICustomResponse.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("City name " + dto.getName() + " is registered already", response.getBody().getMessage());
+    }
 }
+
+
 
